@@ -1,7 +1,8 @@
 (ns gb.routes.home
   (:require [compojure.core :refer :all]
             [gb.views.layout :as layout]
-            [hiccup.form :refer :all]))
+            [hiccup.form :refer :all]
+            [gb.models.db :as db]))
 
 (defn home [& [name message error]]
   (layout/common
@@ -22,9 +23,7 @@
 
 (defn show-guests []
   [:ul.guests
-   (for [{:keys [message name timestamp]}
-         [{:message "howdy" :name "bob" :timestamp nil}
-          {:message "hello" :name "kevin" :timestamp nil}]]
+   (for [{:keys [message name timestamp]} (db/read-guests)]
      [:li
       [:blockquote message]
       [:p "-" [:cite name]]
@@ -38,7 +37,7 @@
     (home name message "missing message entry")
     :else
     (do
-      (println name message)
+      (db/save-message name message)
       (home))))
 
 (defroutes home-routes
