@@ -3,10 +3,10 @@
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.middleware.file-info :refer [wrap-file-info]]
             [hiccup.middleware :refer [wrap-base-url]]
+            [gb.models.db :as db]
             [compojure.handler :as handler]
             [compojure.route :as route]
-            [gb.routes.home :refer [home-routes]
-            [gb.models.db :as db]]))
+            [gb.routes.home :refer [home-routes]]))
 
 (defn init []
   (println "gb is starting"))

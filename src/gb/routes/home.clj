@@ -4,6 +4,19 @@
             [hiccup.form :refer :all]
             [gb.models.db :as db]))
 
+(defn format-time [timestamp]
+  (-> "dd/MM/yyyy"
+    (java.text.SimpleDateFormat.
+      (.format timestamp))))
+
+(defn show-guests []
+  [:ul.guests
+   (for [{:keys [message name timestamp]} (db/read-guests)]
+     [:li
+      [:blockquote message]
+      [:p "-" [:cite name]]
+      [format-time timestamp]])])
+
 (defn home [& [name message error]]
   (layout/common
     [:h1 "Guestbook"]
@@ -21,18 +34,7 @@
     [:br]
     (submit-button "comment"))))
 
-(defn format-time [timestamp]
-  (-> "dd/MM/yyyy"
-    (java.text.SimpleDateFormat.
-      (.format timestamp))))
 
-(defn show-guests []
-  [:ul.guests
-   (for [{:keys [message name timestamp]} (db/read-guests)]
-     [:li
-      [:blockquote message]
-      [:p "-" [:cite name]]
-      [format-time timestamp]])])
 
 (defn save-message [name message]
   (cond
