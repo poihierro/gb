@@ -7,12 +7,18 @@
   (layout/common
     [:h1 "Guestbook"]
     [:p "Welcome to my Guestbook"]
+    [:p error]
+    (show-guests)
     [:hr]
-    [:form]
+    ;; create a form with text fields called "name" and "message"
+    ;; this will be sent when the for posts to the server
+    (form-to [:post "/"]
     [:p "Name"]
-    [:input]
+    (text-field "name" name)
     [:p "Message"]
-    [:textarea {:rows 10 :cols 40}]))
+    (text-area {:rows 10 :cols 40} "message" message)
+    [:br]
+    (submit-button "comment"))))
 
 (defn show-guests []
   [:ul.guests
@@ -24,5 +30,17 @@
       [:p "-" [:cite name]]
       [:time timestamp]])])
 
+(defn save-message [name message]
+  (cond
+    (empty? name)
+    (home name message "someone forgot to leave a name")
+    (empty? message)
+    (home name message "missing message entry")
+    :else
+    (do
+      (println name message)
+      (home))))
+
 (defroutes home-routes
-  (GET "/" [] (home)))
+  (GET "/" [] (home))
+  (POST "/" [name message] (save-message name message)))
