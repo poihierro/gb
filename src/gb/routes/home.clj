@@ -6,8 +6,8 @@
 
 (defn format-time [timestamp]
   (-> "dd/MM/yyyy"
-    (java.text.SimpleDateFormat.
-      (.format timestamp))))
+    (java.text.SimpleDateFormat.)
+    (.format timestamp)))
 
 (defn show-guests []
   [:ul.guests
