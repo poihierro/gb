@@ -15,7 +15,7 @@
      [:li
       [:blockquote message]
       [:p "-" [:cite name]]
-      [format-time timestamp]])])
+      [:time (format-time timestamp)]])])
 
 (defn home [& [name message error]]
   (layout/common
