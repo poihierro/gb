@@ -5,10 +5,13 @@
             [hiccup.middleware :refer [wrap-base-url]]
             [compojure.handler :as handler]
             [compojure.route :as route]
-            [gb.routes.home :refer [home-routes]]))
+            [gb.routes.home :refer [home-routes]
+            [gb.models.db :as db]]))
 
 (defn init []
   (println "gb is starting"))
+  (if-not (.exists (java.io.File. "./db.sq3"))
+    (db/create-gb-table))
 
 (defn destroy []
   (println "gb is shutting down"))
